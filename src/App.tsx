@@ -5,8 +5,10 @@ import { Controls } from '@/components/Controls'
 import { EdgeModeToggle } from '@/components/EdgeModeToggle'
 import {
   createDefaultGrid,
+  createRandomGrid,
   type EdgeMode,
   type Grid,
+  hashGrid,
   nextGeneration,
   toggleCell,
 } from '@/gameOfLife'
@@ -14,6 +16,13 @@ import {
 type Phase = 'setup' | 'simulating'
 
 const DEFAULT_SIZE = 30
+
+/**
+ * How many past generation hashes to remember when looking for a repeating
+ * state. Covers still lifes (cycle length 1) and the vast majority of small
+ * oscillators (periods up to a few dozen generations).
+ */
+const STAGNATION_HISTORY_LENGTH = 32
 
 export function App() {
   const [phase, setPhase] = useState<Phase>('setup')
@@ -23,11 +32,23 @@ export function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [speedMs, setSpeedMs] = useState(300)
   const [generation, setGeneration] = useState(0)
+  const [autoRevive, setAutoRevive] = useState(true)
+  const [reseedCount, setReseedCount] = useState(0)
 
-  const handleSizeChange = useCallback((newSize: number) => {
-    setSize(newSize)
-    setGrid(createDefaultGrid(newSize))
+  const stateHistoryRef = useRef<number[]>([])
+
+  const resetStagnationHistory = useCallback(() => {
+    stateHistoryRef.current = []
   }, [])
+
+  const handleSizeChange = useCallback(
+    (newSize: number) => {
+      setSize(newSize)
+      setGrid(createDefaultGrid(newSize))
+      resetStagnationHistory()
+    },
+    [resetStagnationHistory],
+  )
 
   const handleCellClick = useCallback((row: number, col: number) => {
     setGrid((g) => toggleCell(g, row, col))
@@ -51,8 +72,10 @@ export function App() {
     setIsPlaying(false)
     setPhase('setup')
     setGeneration(0)
+    setReseedCount(0)
     setGrid(createDefaultGrid(size))
-  }, [size])
+    resetStagnationHistory()
+  }, [size, resetStagnationHistory])
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -68,6 +91,30 @@ export function App() {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [isPlaying, speedMs, edgeMode])
+
+  /**
+   * Stagnation watchdog: runs as a plain effect (not a setState updater) so
+   * it executes exactly once per committed grid change, even under
+   * StrictMode's double-invoke of updater functions. If the current grid's
+   * hash already appeared in the recent history, the board has settled into
+   * a still life or a short oscillator - reseed it with a fresh random soup.
+   */
+  useEffect(() => {
+    if (phase !== 'simulating') return
+
+    const hash = hashGrid(grid)
+    const history = stateHistoryRef.current
+    const hasStagnated = history.includes(hash)
+
+    history.push(hash)
+    if (history.length > STAGNATION_HISTORY_LENGTH) history.shift()
+
+    if (hasStagnated && autoRevive) {
+      resetStagnationHistory()
+      setReseedCount((n) => n + 1)
+      setGrid(createRandomGrid(size))
+    }
+  }, [grid, phase, autoRevive, size, resetStagnationHistory])
 
   return (
     <div className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100">
@@ -115,6 +162,9 @@ export function App() {
               speedMs={speedMs}
               onSpeedChange={setSpeedMs}
               generation={generation}
+              autoRevive={autoRevive}
+              onAutoReviveChange={setAutoRevive}
+              reseedCount={reseedCount}
             />
 
             <Board grid={grid} interactive={false} />

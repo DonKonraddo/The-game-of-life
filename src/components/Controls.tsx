@@ -15,6 +15,9 @@ type ControlsProps = {
   speedMs: number
   onSpeedChange: (ms: number) => void
   generation: number
+  autoRevive: boolean
+  onAutoReviveChange: (enabled: boolean) => void
+  reseedCount: number
 }
 
 export function Controls({
@@ -25,6 +28,9 @@ export function Controls({
   speedMs,
   onSpeedChange,
   generation,
+  autoRevive,
+  onAutoReviveChange,
+  reseedCount,
 }: ControlsProps) {
   return (
     <div className="flex flex-wrap items-center gap-3 text-sm text-slate-200">
@@ -68,7 +74,18 @@ export function Controls({
         </select>
       </label>
 
-      <span className="ml-auto text-slate-400">Generation: {generation}</span>
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={autoRevive}
+          onChange={(e) => onAutoReviveChange(e.target.checked)}
+          className="h-4 w-4 accent-emerald-500"
+        />
+        Auto-revive on stagnation
+      </label>
+
+      <span className="text-slate-400">Generation: {generation}</span>
+      <span className="ml-auto text-slate-400">Reseeds: {reseedCount}</span>
     </div>
   )
 }

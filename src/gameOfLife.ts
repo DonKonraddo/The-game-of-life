@@ -107,3 +107,30 @@ export function nextGeneration(grid: Grid, edgeMode: EdgeMode): Grid {
 export function hasAnyAliveCell(grid: Grid): boolean {
   return grid.some((line) => line.some(Boolean))
 }
+
+const FNV_OFFSET_BASIS = 0x811c9dc5
+const FNV_PRIME = 0x01000193
+
+/**
+ * Computes a fast 32-bit hash of the grid's state (FNV-1a over the alive/dead
+ * bits). Used to detect still lifes and oscillators: if the same hash
+ * reappears after N generations, the board has settled into a cycle of
+ * length N (N = 1 means a still life - the state stopped changing at all).
+ */
+export function hashGrid(grid: Grid): number {
+  let hash = FNV_OFFSET_BASIS
+  for (const line of grid) {
+    for (const alive of line) {
+      hash ^= alive ? 1 : 0
+      hash = Math.imul(hash, FNV_PRIME)
+    }
+  }
+  return hash >>> 0
+}
+
+/** Creates a square grid randomly filled with live cells at the given density (0-1). */
+export function createRandomGrid(size: number, density = 0.25): Grid {
+  return Array.from({ length: size }, () =>
+    Array.from({ length: size }, () => Math.random() < density),
+  )
+}
