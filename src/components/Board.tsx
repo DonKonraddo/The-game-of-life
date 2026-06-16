@@ -6,7 +6,7 @@ type BoardProps = {
   interactive: boolean
 }
 
-export default function Board({ grid, onCellClick, interactive }: BoardProps) {
+export function Board({ grid, onCellClick, interactive }: BoardProps) {
   const size = grid.length
 
   return (

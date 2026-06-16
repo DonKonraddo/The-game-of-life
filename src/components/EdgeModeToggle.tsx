@@ -6,7 +6,7 @@ type EdgeModeToggleProps = {
   disabled?: boolean
 }
 
-export default function EdgeModeToggle({
+export function EdgeModeToggle({
   value,
   onChange,
   disabled,

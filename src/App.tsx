@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Board from '@/components/Board'
-import BoardSizeSelect from '@/components/BoardSizeSelect'
-import Controls from '@/components/Controls'
-import EdgeModeToggle from '@/components/EdgeModeToggle'
+import { Board } from '@/components/Board'
+import { BoardSizeSelect } from '@/components/BoardSizeSelect'
+import { Controls } from '@/components/Controls'
+import { EdgeModeToggle } from '@/components/EdgeModeToggle'
 import {
   createDefaultGrid,
   type EdgeMode,
@@ -15,7 +15,7 @@ type Phase = 'setup' | 'simulating'
 
 const DEFAULT_SIZE = 30
 
-export default function App() {
+export function App() {
   const [phase, setPhase] = useState<Phase>('setup')
   const [size, setSize] = useState(DEFAULT_SIZE)
   const [edgeMode, setEdgeMode] = useState<EdgeMode>('fixed')

@@ -6,7 +6,7 @@ type BoardSizeSelectProps = {
   disabled?: boolean
 }
 
-export default function BoardSizeSelect({
+export function BoardSizeSelect({
   value,
   onChange,
   disabled,

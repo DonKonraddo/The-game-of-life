@@ -16,7 +16,7 @@ type ControlsProps = {
   generation: number
 }
 
-export default function Controls({
+export function Controls({
   isPlaying,
   onTogglePlay,
   onStep,

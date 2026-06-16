@@ -1,7 +1,7 @@
 export type Grid = boolean[][]
 export type EdgeMode = 'fixed' | 'torus'
 
-/** Tworzy puste (wszystkie martwe) kwadratowe pole gry o podanym rozmiarze. */
+/** Creates an empty (all dead) square grid of the given size. */
 export function createEmptyGrid(size: number): Grid {
   return Array.from({ length: size }, () =>
     Array.from({ length: size }, () => false),
@@ -9,8 +9,8 @@ export function createEmptyGrid(size: number): Grid {
 }
 
 /**
- * Współrzędne (wiersz, kolumna) wzoru "Acorn" (żołądź) - jednego z najdłużej
- * żyjących małych wzorów ("metuzalemów"): stabilizuje się po 5206 generacjach.
+ * Coordinates (row, col) of the "Acorn" pattern - one of the longest-living
+ * small patterns ("methuselahs"): stabilizes after 5206 generations.
  *   .#.....
  *   ...#...
  *   ##..###
@@ -25,7 +25,7 @@ const ACORN_PATTERN: ReadonlyArray<readonly [number, number]> = [
   [2, 6],
 ]
 
-/** Tworzy planszę z domyślnym wzorem startowym (Acorn) wycentrowanym na środku. */
+/** Creates a grid with the default starting pattern (Acorn) centered on it. */
 export function createDefaultGrid(size: number): Grid {
   const grid = createEmptyGrid(size)
   const offsetRow = Math.floor(size / 2) - 1
@@ -42,7 +42,7 @@ export function createDefaultGrid(size: number): Grid {
   return grid
 }
 
-/** Zwraca nową siatkę z odwróconym stanem jednej komórki (żywa <-> martwa). */
+/** Returns a new grid with a single cell's state flipped (alive <-> dead). */
 export function toggleCell(grid: Grid, row: number, col: number): Grid {
   return grid.map((line, r) =>
     r === row ? line.map((cell, c) => (c === col ? !cell : cell)) : line,
@@ -60,7 +60,7 @@ const NEIGHBOR_OFFSETS = [
   [1, 1],
 ] as const
 
-/** Liczy żywych sąsiadów komórki (row, col), z uwzględnieniem trybu krawędzi. */
+/** Counts the alive neighbours of cell (row, col), respecting the edge mode. */
 export function countAliveNeighbors(
   grid: Grid,
   row: number,
@@ -88,10 +88,10 @@ export function countAliveNeighbors(
 }
 
 /**
- * Wyznacza następną generację zgodnie z regułami Conwaya:
- * - żywa komórka z 2 lub 3 żywymi sąsiadami przetrwa,
- * - żywa komórka z <2 lub >3 sąsiadami umiera,
- * - martwa komórka z dokładnie 3 żywymi sąsiadami ożywa.
+ * Computes the next generation according to Conway's rules:
+ * - a live cell with 2 or 3 live neighbours survives,
+ * - a live cell with <2 or >3 neighbours dies,
+ * - a dead cell with exactly 3 live neighbours is born.
  */
 export function nextGeneration(grid: Grid, edgeMode: EdgeMode): Grid {
   return grid.map((line, row) =>
@@ -103,7 +103,7 @@ export function nextGeneration(grid: Grid, edgeMode: EdgeMode): Grid {
   )
 }
 
-/** Czy na planszy istnieje przynajmniej jedna żywa komórka. */
+/** Whether the grid contains at least one alive cell. */
 export function hasAnyAliveCell(grid: Grid): boolean {
   return grid.some((line) => line.some(Boolean))
 }
