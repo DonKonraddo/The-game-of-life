@@ -15,7 +15,7 @@ export function EdgeModeToggle({
 
   return (
     <label className="flex items-center gap-2 text-sm text-slate-200">
-      Zawijanie krawędzi (torus)
+      Wrap edges (torus)
       <button
         type="button"
         role="switch"

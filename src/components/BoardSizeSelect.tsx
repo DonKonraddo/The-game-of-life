@@ -13,7 +13,7 @@ export function BoardSizeSelect({
 }: BoardSizeSelectProps) {
   return (
     <label className="flex items-center gap-2 text-sm text-slate-200">
-      Rozmiar planszy
+      Board size
       <select
         className="rounded-md border border-slate-600 bg-slate-800 px-2 py-1 text-slate-100 disabled:opacity-50"
         value={value}

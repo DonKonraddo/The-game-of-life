@@ -21,7 +21,7 @@ export function Board({ grid, onCellClick, interactive }: BoardProps) {
             type="button"
             disabled={!interactive}
             onClick={() => onCellClick?.(row, col)}
-            aria-label={`komórka ${row + 1}, ${col + 1}, ${alive ? 'żywa' : 'martwa'}`}
+            aria-label={`cell ${row + 1}, ${col + 1}, ${alive ? 'alive' : 'dead'}`}
             className={`aspect-square min-h-0 min-w-0 ${
               alive ? 'bg-emerald-400' : 'bg-slate-900'
             } ${interactive ? 'cursor-pointer hover:bg-emerald-600/50' : ''}`}

@@ -1,9 +1,10 @@
 const SPEED_OPTIONS = [
-  { label: 'Bardzo szybko', ms: 60 },
-  { label: 'Szybko', ms: 150 },
-  { label: 'Normalnie', ms: 300 },
-  { label: 'Wolno', ms: 600 },
-  { label: 'Bardzo wolno', ms: 1000 },
+  { label: 'Turbo', ms: 10 },
+  { label: 'Very fast', ms: 60 },
+  { label: 'Fast', ms: 150 },
+  { label: 'Normal', ms: 300 },
+  { label: 'Slow', ms: 600 },
+  { label: 'Very slow', ms: 1000 },
 ]
 
 type ControlsProps = {
@@ -32,7 +33,7 @@ export function Controls({
         onClick={onTogglePlay}
         className="rounded-md bg-emerald-600 px-4 py-1.5 font-medium text-white hover:bg-emerald-500"
       >
-        {isPlaying ? 'Pauza' : 'Start'}
+        {isPlaying ? 'Pause' : 'Start'}
       </button>
 
       <button
@@ -41,7 +42,7 @@ export function Controls({
         disabled={isPlaying}
         className="rounded-md bg-slate-700 px-4 py-1.5 font-medium hover:bg-slate-600 disabled:opacity-50"
       >
-        Krok
+        Step
       </button>
 
       <button
@@ -53,7 +54,7 @@ export function Controls({
       </button>
 
       <label className="flex items-center gap-2">
-        Prędkość
+        Speed
         <select
           className="rounded-md border border-slate-600 bg-slate-800 px-2 py-1 text-slate-100"
           value={speedMs}
@@ -67,7 +68,7 @@ export function Controls({
         </select>
       </label>
 
-      <span className="ml-auto text-slate-400">Generacja: {generation}</span>
+      <span className="ml-auto text-slate-400">Generation: {generation}</span>
     </div>
   )
 }

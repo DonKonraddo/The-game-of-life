@@ -72,9 +72,7 @@ export function App() {
   return (
     <div className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-6">
-        <h1 className="text-2xl font-bold">
-          Gra w Życie (Conway's Game of Life)
-        </h1>
+        <h1 className="text-2xl font-bold">Conway's Game of Life</h1>
 
         {phase === 'setup' ? (
           <>
@@ -83,7 +81,7 @@ export function App() {
               onClick={handleStart}
               className="rounded-md bg-emerald-600 px-6 py-2 font-medium text-white hover:bg-emerald-500"
             >
-              Rozpocznij grę
+              Start game
             </button>
 
             <div className="flex flex-wrap items-center justify-center gap-6">
@@ -92,10 +90,10 @@ export function App() {
             </div>
 
             <p className="text-center text-sm text-slate-400">
-              Domyślnie ustawiony jest wzór „Acorn” (żołądź) — żyje bardzo długo
-              (ponad 5000 generacji) zanim się stabilizuje. Możesz go zmienić,
-              klikając komórki, aby ustawić własny początkowy układ żywych
-              komórek, a następnie naciśnij „Rozpocznij grę”.
+              The "Acorn" pattern is set by default — it lives for a very long
+              time (over 5000 generations) before it stabilizes. You can change
+              it by clicking cells to set your own starting layout of live
+              cells, then press "Start game".
             </p>
 
             <Board grid={grid} onCellClick={handleCellClick} interactive />
@@ -104,7 +102,7 @@ export function App() {
           <>
             <div className="flex flex-wrap items-center justify-center gap-6">
               <span className="text-sm text-slate-400">
-                Rozmiar: {size} x {size}
+                Size: {size} x {size}
               </span>
               <EdgeModeToggle value={edgeMode} onChange={setEdgeMode} />
             </div>
