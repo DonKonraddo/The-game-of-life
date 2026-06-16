@@ -29,8 +29,11 @@ równocześnie na podstawie stanu poprzedniej generacji, według reguł:
   ("metuzalemów"), stabilizuje się po ponad 5000 generacjach.
 - Ręczne ustawianie komórek przed startem (klikanie planszy).
 - Sterowanie symulacją: Start/Pauza, Krok, Reset.
-- Regulacja prędkości animacji (5 poziomów).
+- Regulacja prędkości animacji (6 poziomów).
 - Licznik aktualnej generacji.
+- **Wykrywanie stagnacji** — gdy plansza zamarznie w martwej naturze (still life) lub
+  krótkim oscylatorze, jest automatycznie zasiewana na nowo losowym wzorem, żeby symulacja
+  nie stała w miejscu (można wyłączyć).
 
 ### Wymagania
 
@@ -122,8 +125,11 @@ the previous generation's state, following these rules:
   ("methuselahs"), stabilizing after more than 5000 generations.
 - Manually set cells before starting (click on the board).
 - Simulation controls: Start/Pause, Step, Reset.
-- Animation speed control (5 levels).
+- Animation speed control (6 levels).
 - Current generation counter.
+- **Stagnation detection** — when the board settles into a still life or a short-period
+  oscillator, it's automatically reseeded with a fresh random pattern so the simulation
+  keeps going (can be disabled).
 
 ### Requirements
 
